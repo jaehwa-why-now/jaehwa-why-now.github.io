@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { programs } from '../../data/trainer';
 import { Container } from '../common/Container';
 import { SectionHeading } from '../common/SectionHeading';
@@ -8,10 +8,23 @@ import { DragScroll } from '../common/DragScroll';
 import { CheckCircle2 } from 'lucide-react';
 import styles from './ProgramsSection.module.css';
 
+const MOBILE_QUERY = '(max-width: 768px)';
 const LOOP_GROUPS = 7;
 const CENTER_GROUP_INDEX = Math.floor(LOOP_GROUPS / 2);
 
 export const ProgramsSection: React.FC = () => {
+  const [isMobileLoop, setIsMobileLoop] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(MOBILE_QUERY);
+    const updateMobileLoop = () => setIsMobileLoop(mediaQuery.matches);
+
+    updateMobileLoop();
+    mediaQuery.addEventListener('change', updateMobileLoop);
+
+    return () => mediaQuery.removeEventListener('change', updateMobileLoop);
+  }, []);
+
   const renderProgramCard = (
     program: (typeof programs)[number],
     groupIndex: number,
@@ -20,7 +33,7 @@ export const ProgramsSection: React.FC = () => {
   ) => (
     <Card
       key={`${program.id}-${groupIndex}`}
-      className={`${styles.card} ${isDuplicate ? styles.duplicateCard : ''}`}
+      className={styles.card}
       data-loop-start={isSegmentStart ? 'true' : undefined}
       aria-hidden={isDuplicate}
     >
@@ -51,6 +64,21 @@ export const ProgramsSection: React.FC = () => {
     </Card>
   );
 
+  const renderedPrograms = isMobileLoop
+    ? Array.from({ length: LOOP_GROUPS }, (_, groupIndex) => (
+        <React.Fragment key={groupIndex}>
+          {programs.map((program, index) => (
+            renderProgramCard(
+              program,
+              groupIndex,
+              groupIndex !== CENTER_GROUP_INDEX,
+              index === 0,
+            )
+          ))}
+        </React.Fragment>
+      ))
+    : programs.map((program) => renderProgramCard(program, 0));
+
   return (
     <section className={styles.section} id="programs">
       <Container>
@@ -60,28 +88,17 @@ export const ProgramsSection: React.FC = () => {
         />
         
         <DragScroll
-          autoScroll
-          autoScrollMediaQuery="(max-width: 768px)"
+          autoScroll={isMobileLoop}
+          autoScrollMediaQuery={MOBILE_QUERY}
           autoScrollSpeed={0.095}
           className={styles.scroller}
-          loopSegments={LOOP_GROUPS}
+          loopSegments={isMobileLoop ? LOOP_GROUPS : 1}
           aria-label="Programs"
           role="region"
           tabIndex={0}
         >
           <div className={styles.grid}>
-            {Array.from({ length: LOOP_GROUPS }, (_, groupIndex) => (
-              <React.Fragment key={groupIndex}>
-                {programs.map((program, index) => (
-                  renderProgramCard(
-                    program,
-                    groupIndex,
-                    groupIndex !== CENTER_GROUP_INDEX,
-                    index === 0,
-                  )
-                ))}
-              </React.Fragment>
-            ))}
+            {renderedPrograms}
           </div>
         </DragScroll>
       </Container>
