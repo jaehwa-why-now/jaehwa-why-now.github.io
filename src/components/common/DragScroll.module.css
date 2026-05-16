@@ -1,0 +1,12 @@
+.dragScroll {
+  min-width: 0;
+}
+
+.dragging,
+.dragging * {
+  user-select: none;
+}
+
+.dragging {
+  cursor: grabbing;
+}

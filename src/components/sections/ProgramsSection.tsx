@@ -4,14 +4,24 @@ import { Container } from '../common/Container';
 import { SectionHeading } from '../common/SectionHeading';
 import { Card } from '../common/Card';
 import { CTAButton } from '../common/CTAButton';
+import { DragScroll } from '../common/DragScroll';
 import { CheckCircle2 } from 'lucide-react';
 import styles from './ProgramsSection.module.css';
 
+const LOOP_GROUPS = 7;
+const CENTER_GROUP_INDEX = Math.floor(LOOP_GROUPS / 2);
+
 export const ProgramsSection: React.FC = () => {
-  const renderProgramCard = (program: (typeof programs)[number], isDuplicate = false) => (
+  const renderProgramCard = (
+    program: (typeof programs)[number],
+    groupIndex: number,
+    isDuplicate = false,
+    isSegmentStart = false,
+  ) => (
     <Card
-      key={`${program.id}${isDuplicate ? '-duplicate' : ''}`}
-      className={styles.card}
+      key={`${program.id}-${groupIndex}`}
+      className={`${styles.card} ${isDuplicate ? styles.duplicateCard : ''}`}
+      data-loop-start={isSegmentStart ? 'true' : undefined}
       aria-hidden={isDuplicate}
     >
       <div className={styles.header}>
@@ -49,19 +59,31 @@ export const ProgramsSection: React.FC = () => {
           subtitle="목적과 체력에 맞춘 단계별 트레이닝 솔루션" 
         />
         
-        <div className={styles.scroller} aria-label="Programs carousel">
+        <DragScroll
+          autoScroll
+          autoScrollMediaQuery="(max-width: 768px)"
+          autoScrollSpeed={0.095}
+          className={styles.scroller}
+          loopSegments={LOOP_GROUPS}
+          aria-label="Programs"
+          role="region"
+          tabIndex={0}
+        >
           <div className={styles.grid}>
-            {[0, 1, 2].map((groupIndex) => (
-              <div
-                key={groupIndex}
-                className={`${styles.group} ${groupIndex > 0 ? styles.duplicateGroup : ''}`}
-                aria-hidden={groupIndex > 0}
-              >
-                {programs.map((program) => renderProgramCard(program, groupIndex > 0))}
-              </div>
+            {Array.from({ length: LOOP_GROUPS }, (_, groupIndex) => (
+              <React.Fragment key={groupIndex}>
+                {programs.map((program, index) => (
+                  renderProgramCard(
+                    program,
+                    groupIndex,
+                    groupIndex !== CENTER_GROUP_INDEX,
+                    index === 0,
+                  )
+                ))}
+              </React.Fragment>
             ))}
           </div>
-        </div>
+        </DragScroll>
       </Container>
     </section>
   );
