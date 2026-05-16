@@ -1,0 +1,146 @@
+.section {
+  padding: var(--section-padding);
+  background-color: var(--bg-secondary);
+}
+
+.scroller {
+  overflow: visible;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.group {
+  display: contents;
+}
+
+.duplicateGroup {
+  display: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.header {
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.target {
+  display: inline-block;
+  font-size: 0.875rem;
+  color: var(--accent-primary);
+  font-weight: 600;
+  background-color: rgba(163, 230, 53, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+}
+
+.description {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.includes {
+  flex-grow: 1;
+  margin-bottom: 2rem;
+}
+
+.includesTitle {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.listItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+}
+
+.icon {
+  color: var(--accent-primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.footer {
+  margin-top: auto;
+}
+
+@media (max-width: 768px) {
+  .scroller {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    margin-inline: -1.5rem;
+    padding-inline: 1.5rem;
+    scrollbar-width: none;
+  }
+
+  .scroller::-webkit-scrollbar {
+    display: none;
+  }
+
+  .grid {
+    display: flex;
+    gap: 0;
+    width: max-content;
+    animation: programs-marquee 28s linear infinite;
+    will-change: transform;
+  }
+
+  .scroller:active .grid,
+  .grid:hover,
+  .grid:focus-within {
+    animation-play-state: paused;
+  }
+
+  .group,
+  .duplicateGroup {
+    display: flex;
+    gap: 1rem;
+    padding-right: 1rem;
+  }
+
+  .card {
+    flex: 0 0 clamp(300px, 84vw, 360px);
+    min-height: 520px;
+    scroll-snap-align: start;
+  }
+
+  @keyframes programs-marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .grid {
+    animation: none;
+  }
+
+  .duplicateGroup {
+    display: none;
+  }
+}

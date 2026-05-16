@@ -1,0 +1,112 @@
+.section {
+  padding: var(--section-padding);
+  background-color: var(--bg-primary);
+}
+
+.scroller {
+  overflow: visible;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.group {
+  display: contents;
+}
+
+.duplicateGroup {
+  display: none;
+}
+
+.card {
+  text-align: center;
+}
+
+.iconWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background-color: rgba(163, 230, 53, 0.1);
+  color: var(--accent-primary);
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .scroller {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    margin-inline: -1.5rem;
+    padding-inline: 1.5rem;
+    scrollbar-width: none;
+  }
+
+  .scroller::-webkit-scrollbar {
+    display: none;
+  }
+
+  .grid {
+    display: flex;
+    gap: 0;
+    width: max-content;
+    animation: benefits-marquee 34s linear infinite;
+    will-change: transform;
+  }
+
+  .scroller:active .grid,
+  .grid:hover,
+  .grid:focus-within {
+    animation-play-state: paused;
+  }
+
+  .group,
+  .duplicateGroup {
+    display: flex;
+    gap: 1rem;
+    padding-right: 1rem;
+  }
+
+  .card {
+    flex: 0 0 clamp(250px, 78vw, 320px);
+    min-height: 270px;
+    scroll-snap-align: start;
+  }
+
+  @keyframes benefits-marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .grid {
+    animation: none;
+  }
+
+  .duplicateGroup {
+    display: none;
+  }
+}
