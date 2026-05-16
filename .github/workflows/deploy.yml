@@ -46,6 +46,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Wait for branch Pages deployment
+        run: sleep 75
+
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
