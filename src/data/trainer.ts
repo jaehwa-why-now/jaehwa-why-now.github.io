@@ -16,8 +16,8 @@ export const trainerProfile = {
   mapEmbedUrl: `https://maps.google.com/maps?q=${encodeURIComponent(gymMapQuery)}&t=&z=16&ie=UTF8&iwloc=&output=embed`,
   mapUrl: "https://naver.me/F0z2xgR1",
   operatingHours: "평일 00:00 - 24:00 / 주말·공휴일 09:00 - 21:00 / 매월 둘째주 일요일 휴무",
-  mainImage: "/assets/foto2.jpeg",
-  heroImage: "/assets/foto.jpeg"
+  mainImage: "/assets/foto.jpeg",
+  heroImage: "/assets/foto2.jpeg"
 };
 
 export const heroStats = [
