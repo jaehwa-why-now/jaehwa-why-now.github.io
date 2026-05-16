@@ -49,14 +49,17 @@ export const ProgramsSection: React.FC = () => {
           subtitle="목적과 체력에 맞춘 단계별 트레이닝 솔루션" 
         />
         
-        <div className={styles.scroller}>
+        <div className={styles.scroller} aria-label="Programs carousel">
           <div className={styles.grid}>
-            <div className={styles.group}>
-              {programs.map((program) => renderProgramCard(program))}
-            </div>
-            <div className={`${styles.group} ${styles.duplicateGroup}`} aria-hidden="true">
-              {programs.map((program) => renderProgramCard(program, true))}
-            </div>
+            {[0, 1, 2].map((groupIndex) => (
+              <div
+                key={groupIndex}
+                className={`${styles.group} ${groupIndex > 0 ? styles.duplicateGroup : ''}`}
+                aria-hidden={groupIndex > 0}
+              >
+                {programs.map((program) => renderProgramCard(program, groupIndex > 0))}
+              </div>
+            ))}
           </div>
         </div>
       </Container>

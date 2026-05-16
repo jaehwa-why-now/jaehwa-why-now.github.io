@@ -90,10 +90,8 @@
 
 @media (max-width: 768px) {
   .scroller {
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
+    overflow: hidden;
     margin-inline: -1.5rem;
-    padding-inline: 1.5rem;
     scrollbar-width: none;
   }
 
@@ -106,6 +104,7 @@
     gap: 0;
     width: max-content;
     animation: programs-marquee 28s linear infinite;
+    transform: translate3d(0, 0, 0);
     will-change: transform;
   }
 
@@ -125,12 +124,11 @@
   .card {
     flex: 0 0 clamp(300px, 84vw, 360px);
     min-height: 520px;
-    scroll-snap-align: start;
   }
 
   @keyframes programs-marquee {
     to {
-      transform: translateX(-50%);
+      transform: translate3d(calc(-100% / 3), 0, 0);
     }
   }
 }

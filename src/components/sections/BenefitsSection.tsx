@@ -32,14 +32,17 @@ export const BenefitsSection: React.FC = () => {
           subtitle="수많은 회원님들이 저와 함께 결과를 만든 이유입니다" 
         />
         
-        <div className={styles.scroller}>
+        <div className={styles.scroller} aria-label="Why Choose Me carousel">
           <div className={styles.grid}>
-            <div className={styles.group}>
-              {benefits.map((benefit, index) => renderBenefitCard(benefit, index))}
-            </div>
-            <div className={`${styles.group} ${styles.duplicateGroup}`} aria-hidden="true">
-              {benefits.map((benefit, index) => renderBenefitCard(benefit, index, true))}
-            </div>
+            {[0, 1, 2].map((groupIndex) => (
+              <div
+                key={groupIndex}
+                className={`${styles.group} ${groupIndex > 0 ? styles.duplicateGroup : ''}`}
+                aria-hidden={groupIndex > 0}
+              >
+                {benefits.map((benefit, index) => renderBenefitCard(benefit, index, groupIndex > 0))}
+              </div>
+            ))}
           </div>
         </div>
       </Container>

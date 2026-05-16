@@ -56,10 +56,8 @@
 
 @media (max-width: 768px) {
   .scroller {
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
+    overflow: hidden;
     margin-inline: -1.5rem;
-    padding-inline: 1.5rem;
     scrollbar-width: none;
   }
 
@@ -72,6 +70,7 @@
     gap: 0;
     width: max-content;
     animation: benefits-marquee 34s linear infinite;
+    transform: translate3d(0, 0, 0);
     will-change: transform;
   }
 
@@ -91,12 +90,11 @@
   .card {
     flex: 0 0 clamp(250px, 78vw, 320px);
     min-height: 270px;
-    scroll-snap-align: start;
   }
 
   @keyframes benefits-marquee {
     to {
-      transform: translateX(-50%);
+      transform: translate3d(calc(-100% / 3), 0, 0);
     }
   }
 }
